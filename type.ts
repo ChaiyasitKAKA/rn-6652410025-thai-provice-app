@@ -15,5 +15,6 @@ export interface Highlight {
   id: number | string;
   name: string;
   date: string;
+  description: string;
   image_url: string;
 }

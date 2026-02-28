@@ -89,22 +89,6 @@ export default function Home() {
     }
   };
 
-  // ดึงข้อมูลจาก Database ผ่านตัวแปร item (ที่ถูกแมปฟิลด์ใหม่ให้ตรงกับ Table)
-  const renderHighlightItem = ({ item }: { item: Highlight }) => (
-    <TouchableOpacity activeOpacity={0.9} style={styles.festivalCard}>
-      <Image source={{ uri: item.image_url }} style={styles.festivalImage} />
-      <View style={styles.festivalOverlay}>
-        <Text style={styles.festivalName} numberOfLines={1}>
-          {item.name}
-        </Text>
-        <View style={styles.festivalDateContainer}>
-          <Ionicons name="calendar-outline" size={14} color="#E5E7EB" />
-          <Text style={styles.festivalDate}>{item.date}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
   const renderHeader = () => (
     <View style={styles.headerContainer}>
       {/* ซ่อนส่วนไฮไลต์ถ้ายังไม่มีข้อมูลใน Database */}
@@ -138,7 +122,7 @@ export default function Home() {
     </View>
   );
 
-  const renderShopItem = ({ item }: { item: Sakonnaja }) => {
+  const rendersakonitem = ({ item }: { item: Sakonnaja }) => {
     const tagInfo = getCategoryTag(item.category);
 
     return (
@@ -191,6 +175,36 @@ export default function Home() {
     );
   };
 
+  const renderHighlightItem = ({ item }: { item: Highlight }) => (
+    <TouchableOpacity
+      activeOpacity={0.9}
+      style={styles.festivalCard}
+      onPress={() =>
+        router.push({
+          pathname: "/festival_detial",
+          params: {
+            id: item.id,
+            name: item.name,
+            image_url: item.image_url,
+            description: item.description,
+            date: item.date,
+          },
+        })
+      }
+    >
+      <Image source={{ uri: item.image_url }} style={styles.festivalImage} />
+      <View style={styles.festivalOverlay}>
+        <Text style={styles.festivalName} numberOfLines={1}>
+          {item.name}
+        </Text>
+        <View style={styles.festivalDateContainer}>
+          <Ionicons name="calendar-outline" size={14} color="#E5E7EB" />
+          <Text style={styles.festivalDate}>{item.date}</Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.mainContainer}>
       {loading ? (
@@ -207,7 +221,7 @@ export default function Home() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={(props) => (
             <View style={{ paddingHorizontal: 16 }}>
-              {renderShopItem(props)}
+              {rendersakonitem(props)}
             </View>
           )}
         />
