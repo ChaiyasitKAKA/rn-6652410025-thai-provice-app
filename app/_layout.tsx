@@ -1,24 +1,63 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
+import {
+  NotoSansThai_400Regular,
+  NotoSansThai_500Medium,
+} from "@expo-google-fonts/noto-sans-thai";
+import {
+  Pridi_400Regular,
+  Pridi_700Bold,
+  useFonts,
+} from "@expo-google-fonts/pridi";
+import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const [fontsLoaded] = useFonts({
+    Pridi_400Regular,
+    Pridi_700Bold,
+    NotoSansThai_400Regular,
+    NotoSansThai_500Medium,
+  });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="home"
+        options={{
+          title: "สกลนคร",
+          headerTitleStyle: {
+            fontFamily: "Pridi_700Bold",
+            color: "#F4F5F0",
+          },
+          headerStyle: {
+            backgroundColor: "#2F5233",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="detail"
+        options={{
+          title: "รายละเอียด",
+          headerBackButtonDisplayMode: "minimal",
+          headerTitleStyle: {
+            fontFamily: "Pridi_700Bold",
+            color: "#F4F5F0",
+          },
+          headerStyle: {
+            backgroundColor: "#2F5233",
+          },
+        }}
+      />
+    </Stack>
   );
 }
